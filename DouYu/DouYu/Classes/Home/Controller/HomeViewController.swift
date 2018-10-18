@@ -13,7 +13,7 @@ private let kTitleViewH : CGFloat = 40
 class HomeViewController: UIViewController {
     //MARK:- 懒加载属性
     private lazy var pageTitleView : PageTitleView = {[weak self] in
-        let titleFrame = CGRect(x: 0, y: kStatusBarH + kNavigationBarH, width: UIScreen.main.bounds.width, height: kTitleViewH)
+        let titleFrame = CGRect(x: 0, y: kStatusBarH + kNavigationBarH, width: kScreenW, height: kTitleViewH)
         let titles = ["推荐","游戏","娱乐","趣玩"]
         let titleView = PageTitleView(frame: titleFrame, titles: titles)
         titleView.delegate = self
@@ -22,7 +22,7 @@ class HomeViewController: UIViewController {
     
     private lazy var pageContentView : PageContentView = {[weak self] in
 //        1.确定内容的frame
-        let contentH = kScreenH - kStatusBarH - kNavigationBarH - kTitleViewH
+        let contentH = kScreenH - kStatusBarH - kNavigationBarH - kTitleViewH - kTabbarH
         let contentFrame = CGRect(x: 0, y: kStatusBarH + kNavigationBarH + kTitleViewH, width: kScreenW, height: contentH)
         
 //        2.确定所有的子控制器
@@ -59,7 +59,7 @@ extension HomeViewController{
         
         // 3.添加ContentView
         view.addSubview(pageContentView)
-        pageContentView.backgroundColor = UIColor.purple
+        //pageContentView.backgroundColor = UIColor.purple
     }
     
     private func setupNavigationBar() {
@@ -95,6 +95,7 @@ extension HomeViewController : PageTitleViewDelegate {
 //MARK:- 遵守PageContentViewDelegate协议
 extension HomeViewController : PageContentViewDelegate {
     func pageContentView(contentView: PageContentView, progress: CGFloat, sourceIndex: Int, targetIndex: Int) {
+        pageTitleView.setTitleWithProgress(progress: progress, sourceIndex: sourceIndex, targetIndex: targetIndex)
         
     }
     
